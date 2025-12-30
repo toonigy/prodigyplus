@@ -13,6 +13,10 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc; /* Light gray background */
         }
+        /* Styling for the modal overlay */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -72,18 +76,50 @@
                     </span>
                 </div>
                 
-                <!-- Play Button for 1-30-0 -->
-                <a href="https://toonigy.github.io/ProdigyPlus/1-30-0" target="_blank" class="w-full md:w-auto inline-block bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white text-lg font-bold py-3 px-6 rounded-full shadow-md transform hover:scale-105 transition duration-300 ease-in-out text-center">
+                <!-- NEW: Button to trigger the mod selection modal -->
+                <button id="btn-1-30-0-play" class="w-full md:w-auto inline-block bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white text-lg font-bold py-3 px-6 rounded-full shadow-md transform hover:scale-105 transition duration-300 ease-in-out text-center">
                     🚀 Play Now
-                </a>
+                </button>
             </div>
             
-            <!-- Removed: Placeholder for Prodigy Definitive Edition -->
-            <!-- Removed: Placeholder for Prodidows -->
-
         </div>
 
     </main>
+
+    <!-- Mod Selection Modal (Hidden by default) -->
+    <div id="mod-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center modal-overlay">
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl max-w-sm mx-auto transform transition-all duration-300 scale-100">
+            <h3 class="text-2xl font-bold text-indigo-800 mb-4 border-b pb-2">
+                Enable Mods for 1-30-0
+            </h3>
+            <p class="text-gray-600 mb-6">
+                Do you want to enable community mods? You can choose to play the vanilla version instead.
+            </p>
+            
+            <ul class="list-disc list-inside text-left text-sm text-gray-700 mb-6 space-y-1 ml-4">
+                <li class="font-semibold">FastGameSpeed (Faster gameplay)</li>
+                <li class="font-semibold">ClassicFaces (Nostalgic art assets)</li>
+                <li class="font-semibold">WalkSpeed (Adjustable character speed)</li>
+            </ul>
+
+            <div class="space-y-3">
+                <!-- Button to play with mods (sends all mods in hash) -->
+                <button id="btn-play-mods" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg shadow transition duration-150">
+                    Play with Mods
+                </button>
+                
+                <!-- Button to play without mods (original URL) -->
+                <button id="btn-play-vanilla" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg shadow transition duration-150">
+                    Play Vanilla
+                </button>
+                
+                <!-- Button to close modal -->
+                <button id="btn-cancel-modal" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-lg transition duration-150">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer (Consistent with index.html) -->
     <footer class="bg-gray-800 text-white py-8 mt-auto">
@@ -97,5 +133,47 @@
         </div>
     </footer>
 
+    <!-- JavaScript for Modal Logic -->
+    <script>
+        const BASE_URL = 'https://toonigy.github.io/ProdigyPlus/1-30-0';
+        const MOD_HASH = '#mods=FastGameSpeed,ClassicFaces,WalkSpeed';
+
+        const modal = document.getElementById('mod-modal');
+        const playButton = document.getElementById('btn-1-30-0-play');
+        const playModsButton = document.getElementById('btn-play-mods');
+        const playVanillaButton = document.getElementById('btn-play-vanilla');
+        const cancelButton = document.getElementById('btn-cancel-modal');
+
+        // Function to show the modal
+        function showModal() {
+            modal.classList.remove('hidden');
+        }
+
+        // Function to hide the modal
+        function hideModal() {
+            modal.classList.add('hidden');
+        }
+
+        // Event listener to open modal when 'Play Now' is clicked
+        playButton.addEventListener('click', showModal);
+
+        // Event listener to close modal when 'Cancel' is clicked
+        cancelButton.addEventListener('click', hideModal);
+
+        // Event listener for playing with mods
+        playModsButton.addEventListener('click', () => {
+            hideModal();
+            // Redirect with hash containing all mods enabled
+            window.location.href = BASE_URL + MOD_HASH;
+        });
+
+        // Event listener for playing vanilla
+        playVanillaButton.addEventListener('click', () => {
+            hideModal();
+            // Redirect to the base URL (no mods)
+            window.location.href = BASE_URL;
+        });
+
+    </script>
 </body>
 </html>
