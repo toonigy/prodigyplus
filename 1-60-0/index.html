@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Prodigy 1.60.0</title>
+    <title>ProdigyPlus 1.60.0</title>
     <meta charset="UTF-8" />
     <meta name="description" content="The legendary math game Prodigy is now legendary again, and no longer a math game!"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -312,6 +312,54 @@
     </div>
 
     <div id="membership-flow"></div>
+	
+	<!-- This basically loads all of the Firebase stuff we're gonna need for Google auth and autosaving. -->
+	<script type="module">
+	  
+		// Make sure to periodically check for updates, and make sure the Firebase SDKs are up-to-date :)
+		import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js'
+
+		// Add Firebase products that you want to use
+		import { getAuth, GoogleAuthProvider, getIdToken, onAuthStateChanged, reauthenticateWithPopup, signInWithPopup } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js'
+		import { getDatabase, child, get, ref, remove, set } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js'
+		
+		// Your web app's Firebase configuration
+		// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDVxcNNmGrFSer05stnh3IT4sIOirPJAxQ",
+  authDomain: "pokipoki-world.firebaseapp.com",
+  databaseURL: "https://pokipoki-world-default-rtdb.firebaseio.com",
+  projectId: "pokipoki-world",
+  storageBucket: "pokipoki-world.firebasestorage.app",
+  messagingSenderId: "206191017514",
+  appId: "1:206191017514:web:0ab28f7788790eec3a4d53",
+  measurementId: "G-M9LNQ5M8RR"
+		};
+
+		// Initialize Firebase
+		const app = initializeApp(firebaseConfig);
+		
+		// Firebase products we'll be using.
+		const auth = getAuth(app);
+		const database = getDatabase(app);
+		
+		// Make sure the rest of the game can use the Firebase stuff.
+		globalThis.firebase = {
+			app,
+			auth,
+			database,
+			utils: {
+				db: {
+					child, get, ref, remove, set
+				},
+				auth: {
+					GoogleAuthProvider, getIdToken, onAuthStateChanged, reauthenticateWithPopup, signInWithPopup
+				}
+			}
+		}
+	</script>
+	
+	<!-- Other game scripts -->
     <script src="./js/lodash.min.js"></script>
     <script src="./js/phaser.min.js"></script>
     <script src="./js/easystar-0.2.0.min.js"></script>
